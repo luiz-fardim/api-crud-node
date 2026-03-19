@@ -34,7 +34,7 @@ router.put("/:id",(req, res) => {
 
 // DELETE - deletar rota
 router.delete("/:id",(req, res) => {
-    const result = db.prepare('DELETE FROM livros WHERE id = ?').run(res.params.id)
+    const result = db.prepare('DELETE FROM livros WHERE id = ?').run(req.params.id)
     if (result.changes === 0) return res.status(404).json({mensagem: "Livro não encontrado."})
     res.json({mensagem: "Livro deletado com sucesso!"})
 })
