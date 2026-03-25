@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import db  from '../database.js'
+import { livroSchema, livroUpdateSchema } from '../schemas/livroSchema.js'
 
 const router = Router()
 
@@ -18,16 +19,26 @@ router.get('/:id', (req, res) => {
 
 // POST - criar livro
 router.post('/', (req, res) => {
-    const { titulo, autor, ano} = req.body
-    if (!titulo || !autor) return res.status(400).json({ mensagem: "Título e autor são obrigatórios."})
+    // validação de dados com zod
+    const resultado = livroSchema.safeParse(req.body)
+    if (!resultado.success) return res.status(400).json({ erros: resultado.error.flatten().fieldErrors})
+
+    // lógica da rota
+    const { titulo, autor, ano} = resultado.data
     const result = db.prepare('INSERT INTO livros (titulo, autor, ano) VALUES (?, ?, ?)').run(titulo, autor, ano)
     res.status(201).json({id: result.lastInsertRowid, titulo, autor, ano})
 })
 
 // PUT - atualizar livro
 router.put("/:id",(req, res) => {
-    const {titulo, autor, ano, id} = req.body
+    // validação com zod
+    const resultado = livroUpdateSchema.safeParse(req.body)
+    if (!resultado.success) return res.status(400).json({ erros: resultado.error.flatten().fieldErrors})
+
+    // lógica da rota 
+    const {titulo, autor, ano, id} = resultado.data
     const result = db.prepare('UPDATE livros SET titulo = ?, autor = ?, ano = ? WHERE id = ?').run(titulo, autor, ano, id)
+
     if (result.changes === 0) return res.status(404).json({mensagem: "Livro não encontrado."})
     res.json({mensagem: "Livro atualizado com sucesso!"})
 })

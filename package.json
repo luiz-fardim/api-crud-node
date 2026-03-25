@@ -1,18 +1,23 @@
 {
-  "name": "biblioteca-api",
+  "name": "api-crud-nod",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Uma API REST simples e funcional para o gerenciamento de acervo de livros. Este projeto foi desenvolvido em **Node.js** utilizando o framework **Express** e o banco de dados **SQLite** para fins de estudo sobre operações CRUD.",
+  "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
   "dependencies": {
-    "better-sqlite3": "^9.4.3",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.3"
+    "better-sqlite3": "^12.8.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "zod": "^4.3.6"
   },
-    "devDependencies": {
-      "nodemon": "^3.1.0"
-    }
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
-
+}
